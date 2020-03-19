@@ -122,6 +122,32 @@ The folder `data/rRNA_databases/silva_ids_acc_tax.tar.gz` contains SILVA taxonom
 for each of the reference sequences in the representative databases. The format of the files is three tab-separated columns,
 the first being the reference sequence ID, the second being the accession number and the final column is the taxonomy.
 
+# Using Sortmerna via docker
+## Build the container
+```bash
+docker build -t biocore/sortmerna:4.2.0 .
+```
+## Run the container
+Where fasta inputs are in the folder `/path/to/fastqs`,
+and the output folder is `/path/to/outputs`.
+```bash
+docker run 
+ --volume /path/to/fastqs/:/mnt/fastqs:ro \
+ --volume /path/to/outputs/:/mnt/outputs \
+ biocore/sortmerna:4.2.0 \
+    --ref '${RRNA_REF_DIR}/rfam-5.8s-database-id98.fasta' \  
+    --ref '${RRNA_REF_DIR}/rfam-5s-database-id98.fasta' \    
+    --ref '${RRNA_REF_DIR}/silva-arc-16s-id95.fasta' \       
+    --ref '${RRNA_REF_DIR}/silva-arc-23s-id98.fasta' \       
+    --ref '${RRNA_REF_DIR}/silva-bac-16s-id90.fasta' \
+    --ref '${RRNA_REF_DIR}/silva-euk-28s-id98.fasta' \
+    --ref '${RRNA_REF_DIR}/silva-bac-23s-id98.fasta' \
+    --ref '${RRNA_REF_DIR}/silva-euk-18s-id95.fasta' \
+    --workdir=/mnt/outputs \
+    --reads=/mnt/inputs/read_R1.fasta \
+    --reads=/mnt/inputs/read_R2.fasta
+```
+
 # Citation
 
 If you use SortMeRNA, please cite:
